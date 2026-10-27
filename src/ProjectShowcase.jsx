@@ -82,8 +82,8 @@ export default function ProjectShowcase() {
     <section className="section caseSection" id="realisations" aria-labelledby="cases-title">
       <div className="caseHeading">
         <div>
-          <p className="caseEyebrow">Des idées devenues des applications</p>
-          <h2 id="cases-title">Mes réalisations,<br />de plus près.</h2>
+          <p className="caseEyebrow">Réalisations</p>
+          <h2 id="cases-title">Des applications.<br />Des usages concrets.</h2>
         </div>
         <p>Du produit grand public aux outils spécialisés, chaque projet répond à un besoin différent. Voici ce qu’il fait, comment il fonctionne et ce qu’il m’a appris.</p>
       </div>

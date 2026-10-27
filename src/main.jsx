@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import {
   ArrowDown,
@@ -9,22 +9,24 @@ import {
   Download,
   Eye,
   GitBranch,
+  Layers,
+  ListChecks,
   Mail,
   MapPin,
+  Menu,
   ShieldCheck,
-  Terminal,
+  X,
 } from 'lucide-react'
 import './styles.css'
 import ProjectShowcase from './ProjectShowcase'
 
 const githubUrl = 'https://github.com/RekimaAnis'
-const heroImage = `${import.meta.env.BASE_URL}hero-portfolio.png`
+const heroImage = `${import.meta.env.BASE_URL}hero-portfolio.webp`
 const cvUrl = `${import.meta.env.BASE_URL}CV-Anis-Rekima.pdf`
 const portraitUrl = `${import.meta.env.BASE_URL}portrait-anis-rekima.webp`
 
 const featuredProjects = [
   {
-    number: '01',
     title: 'Trading Bot',
     kicker: 'Machine learning appliqué à la finance',
     description:
@@ -34,7 +36,6 @@ const featuredProjects = [
     tone: 'lime',
   },
   {
-    number: '02',
     title: 'Serveur de chat',
     kicker: 'Programmation système & réseau',
     description:
@@ -44,7 +45,6 @@ const featuredProjects = [
     tone: 'coral',
   },
   {
-    number: '03',
     title: "Classification d'images",
     kicker: 'Intelligence artificielle',
     description:
@@ -69,22 +69,82 @@ const otherProjects = [
 
 const skillGroups = [
   {
+    icon: Layers,
+    title: 'Architecture & conception',
+    description: 'Structurer une solution, choisir ses architectures et préparer son évolution.',
+    skills: [
+      'Analyse du besoin & modélisation UML',
+      'Design patterns & principes SOLID',
+      'Architectures MVC, MVVM & en couches',
+      'Conception d’API & contrats entre composants',
+      'Modularité & séparation des responsabilités',
+      'Maintenabilité, testabilité & évolutivité',
+    ],
+  },
+  {
+    icon: ListChecks,
+    title: 'Gestion de projet',
+    description: 'Relier les besoins, les décisions techniques et l’organisation de la réalisation.',
+    skills: [
+      'Cadrage & recueil des besoins',
+      'Spécifications fonctionnelles & techniques',
+      'Planification, priorisation & gestion de backlog',
+      'Méthodes agiles & suivi des tâches',
+      'Coordination en équipe & revues de code',
+      'Documentation & transmission des connaissances',
+    ],
+  },
+  {
+    icon: GitBranch,
+    title: 'CI/CD & qualité logicielle',
+    description: 'Fiabiliser les changements, automatiser les vérifications et préparer les livraisons.',
+    skills: [
+      'Intégration & livraison continues',
+      'Pipelines CI/CD · GitHub Actions',
+      'Git, branches & pull requests',
+      'Tests unitaires, intégration & end-to-end',
+      'Builds reproductibles & conteneurisation',
+      'Configuration & traçabilité des déploiements',
+    ],
+  },
+  {
     icon: CloudCog,
-    title: 'Cloud & DevOps',
-    description: 'Déployer, automatiser et administrer des environnements fiables.',
-    skills: ['Docker', 'Kubernetes', 'Terraform', 'Ansible', 'Git', 'VirtualBox'],
+    title: 'Cloud & infrastructures',
+    description: 'Concevoir les environnements d’exécution et automatiser leur mise en place.',
+    skills: [
+      'On-premise, cloud public, privé & hybride',
+      'Modèles de service · IaaS, PaaS & SaaS',
+      'Virtualisation · VirtualBox & QEMU',
+      'Conteneurs & orchestration · Docker, Kubernetes',
+      'Infrastructure as Code · Terraform',
+      'Automatisation & configuration · Ansible',
+    ],
   },
   {
     icon: ShieldCheck,
-    title: 'Cybersécurité',
-    description: 'Comprendre les systèmes, analyser et renforcer leur sécurité.',
-    skills: ['Ghidra', 'PWNDBG', 'Sécurité système', 'Réseaux', 'Cisco Packet Tracer'],
+    title: 'Systèmes, réseaux & sécurité',
+    description: 'Comprendre le fonctionnement des systèmes et intégrer la sécurité à leur conception.',
+    skills: [
+      'Linux & architecture des systèmes d’exploitation',
+      'Réseaux & protocoles · TCP/IP',
+      'Contrôle des accès & isolation',
+      'Analyse binaire · Ghidra & PWNDBG',
+      'Diagnostic & sécurité des systèmes',
+      'Simulation réseau · Cisco Packet Tracer',
+    ],
   },
   {
     icon: Code2,
-    title: 'Développement',
-    description: 'Construire des solutions du bas niveau jusqu’aux interfaces web.',
-    skills: ['Java', 'C', 'C#', 'Rust', 'Python', 'JavaScript', 'PHP', 'SQL'],
+    title: 'Logiciel & données',
+    description: 'Mettre en œuvre les solutions, du bas niveau aux applications et à l’analyse de données.',
+    skills: [
+      'Java, C, C#, Rust & PHP',
+      'JavaScript, TypeScript & interfaces React',
+      'API & backends · Node.js, NestJS, FastAPI',
+      'SQL, PostgreSQL & MongoDB',
+      'Python, machine learning & analyse de données',
+      'Applications web, mobile & programmation système',
+    ],
   },
 ]
 
@@ -173,16 +233,38 @@ function Timeline({ title, items }) {
 
 function App() {
   useReveal()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const navRef = useRef(null)
+  const menuToggleRef = useRef(null)
+
+  useEffect(() => {
+    if (!menuOpen) return
+    function closeOnEscape(event) {
+      if (event.key === 'Escape') {
+        setMenuOpen(false)
+        menuToggleRef.current?.focus()
+      }
+    }
+    function closeOutside(event) {
+      if (!navRef.current?.contains(event.target)) setMenuOpen(false)
+    }
+    document.addEventListener('keydown', closeOnEscape)
+    document.addEventListener('pointerdown', closeOutside)
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape)
+      document.removeEventListener('pointerdown', closeOutside)
+    }
+  }, [menuOpen])
 
   return (
     <main>
-      <nav className="nav" aria-label="Navigation principale">
+      <nav className="nav" aria-label="Navigation principale" ref={navRef}>
         <a className="brand" href="#accueil" aria-label="Retour à l'accueil">
-          <span className="brandMark">AR</span>
           <span className="brandName">Anis Rekima</span>
         </a>
-        <div className="navLinks">
+        <div className={`navLinks${menuOpen ? ' isOpen' : ''}`} id="main-navigation" onClick={() => setMenuOpen(false)}>
           <a href="#realisations">Réalisations</a>
+          <a href="#profil">À propos</a>
           <a href="#collaborer">Collaborer</a>
           <a href="#expertise">Expertise</a>
           <a href="#parcours">Parcours</a>
@@ -191,75 +273,67 @@ function App() {
           <Mail aria-hidden="true" size={16} />
           Contact
         </a>
+        <button className="navToggle" ref={menuToggleRef} type="button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}>
+          {menuOpen ? <X aria-hidden="true" size={22} /> : <Menu aria-hidden="true" size={22} />}
+        </button>
       </nav>
 
       <section
         className="hero"
         id="accueil"
-        style={{ '--hero-image': `url(${heroImage})` }}
       >
+        <img className="heroBackground" src={heroImage} alt="" aria-hidden="true" width="1717" height="916" fetchPriority="high" />
         <div className="heroInner">
-          <div className="availability">
-            <span aria-hidden="true" />
-            Missions freelance & alternance
-          </div>
-          <p className="heroRole">Développement web · Logiciel · Cloud & sécurité</p>
-          <div className="heroIdentity">
-            <img className="heroPortrait" src={portraitUrl} alt="Portrait d’Anis Rekima" width="144" height="180" fetchPriority="high" />
-            <h1>Anis Rekima</h1>
-          </div>
-          <p className="heroStatement">
-            Je transforme la complexité technique en systèmes
-            <strong> fiables, sécurisés et utiles.</strong>
-          </p>
+          <p className="availability">Freelance & alternance</p>
+          <h1>Anis Rekima</h1>
+          <p className="heroRole">Ingénieur en informatique.</p>
           <p className="heroIntro">
-            Je conçois des applications web, des outils métier et des expériences
-            numériques sur mesure. Basé à Lille, je suis ouvert aux missions
-            freelance et aux opportunités en alternance.
+            Je conçois des solutions informatiques, de leur architecture à leur
+            déploiement. Logiciel, infrastructures, données et sécurité : une
+            vision d’ensemble, du besoin au fonctionnement du système.
           </p>
           <div className="heroActions">
             <a className="button buttonPrimary" href="#realisations">
-              Découvrir mon travail
+              Voir mes réalisations
               <ArrowDown aria-hidden="true" size={17} />
             </a>
-            <a className="button buttonGhost" href={cvUrl} target="_blank" rel="noreferrer">
-              <Eye aria-hidden="true" size={17} />
-              Voir mon CV
-            </a>
-            <a className="button buttonGhost" href={cvUrl} download>
-              <Download aria-hidden="true" size={17} />
-              Télécharger mon CV
+            <a className="heroContactLink" href="#collaborer">
+              Discutons de votre besoin <ArrowUpRight aria-hidden="true" size={17} />
             </a>
           </div>
         </div>
-        <div className="heroMeta" aria-label="Informations principales">
-          <span><MapPin aria-hidden="true" size={16} /> Lille, France</span>
-          <ExternalLink href={githubUrl}><GitBranch aria-hidden="true" size={16} /> GitHub</ExternalLink>
+        <div className="heroFooter">
+          <div className="heroCvLinks" aria-label="Curriculum vitae">
+            <a href={cvUrl} target="_blank" rel="noreferrer"><Eye aria-hidden="true" size={16} /> Voir mon CV</a>
+            <a href={cvUrl} download><Download aria-hidden="true" size={16} /> Télécharger le PDF</a>
+          </div>
+          <div className="heroMeta" aria-label="Informations principales">
+            <span><MapPin aria-hidden="true" size={16} /> Lille, France</span>
+            <ExternalLink href={githubUrl}><GitBranch aria-hidden="true" size={16} /> GitHub</ExternalLink>
+          </div>
         </div>
       </section>
 
-      <section className="proofBar" aria-label="Profil en quelques chiffres">
-        <div><strong>Web & mobile</strong><span>Des interfaces aux API</span></div>
-        <div><strong>Data & systèmes</strong><span>Des besoins techniques variés</span></div>
-        <div><strong>Freelance</strong><span>Pour vos projets numériques</span></div>
-        <div><strong>Alternance</strong><span>Pour rejoindre votre équipe</span></div>
-      </section>
-
-      <section className="section introSection reveal" id="profil">
-        <div className="sectionLabel"><span>01</span> Profil</div>
+      <section className="section introSection" id="profil" aria-labelledby="profile-title">
         <div className="introLayout">
-          <h2>Curieux par nature.<br />Rigoureux par méthode.</h2>
+          <figure className="profilePortrait">
+            <img src={portraitUrl} alt="Portrait d’Anis Rekima" width="320" height="400" loading="lazy" />
+            <figcaption>Anis Rekima <span>Ingénieur en informatique, à Lille</span></figcaption>
+          </figure>
           <div className="introCopy">
+            <p className="sectionLabel">À propos</p>
+            <h2 id="profile-title">Logiciel, architecture<br />et infrastructures.</h2>
             <p>
-              Mon terrain de jeu va du code bas niveau au déploiement cloud. Cette
-              vision transversale me permet de comprendre une application dans son
-              ensemble : comment elle est construite, déployée, observée et protégée.
+              Mon parcours en informatique à l’Université de Lille associe génie
+              logiciel, architecture, systèmes, réseaux et cloud. Mes projets
+              mobilisent aussi bien la conception d’applications que l’organisation
+              de leur réalisation, les pipelines CI/CD et leur infrastructure.
             </p>
             <p>
               J’accompagne les porteurs de projet dans la création de leurs outils
               numériques et je souhaite aussi rejoindre une équipe en alternance.
-              Dans les deux cas, j’aime clarifier le besoin, construire et améliorer
-              le résultat avec les personnes qui l’utilisent.
+              J’aime partir d’un besoin précis, construire une première version
+              utilisable et la faire évoluer avec ses utilisateurs.
             </p>
             <div className="profileFacts">
               <span>Permis B · Véhiculé</span>
@@ -272,9 +346,9 @@ function App() {
       <ProjectShowcase />
 
       <section className="section projectsSection" id="projets">
-        <div className="sectionLabel reveal"><span>02</span> Projets sélectionnés</div>
+        <div className="sectionLabel reveal">Code & expérimentations</div>
         <div className="sectionLead reveal">
-          <h2>D’autres explorations,<br />le code en accès libre.</h2>
+          <h2>D’autres projets<br />sur GitHub.</h2>
           <p>
             Une sélection de travaux où j’explore la donnée, les réseaux et les
             systèmes. Le code source est accessible pour voir au-delà de la vitrine.
@@ -284,7 +358,6 @@ function App() {
         <div className="featuredProjects">
           {featuredProjects.map((project) => (
             <article className={`featuredProject reveal ${project.tone}`} key={project.title}>
-              <div className="projectNumber">{project.number}</div>
               <div className="projectBody">
                 <p className="projectKicker">{project.kicker}</p>
                 <h3>{project.title}</h3>
@@ -327,12 +400,13 @@ function App() {
       </section>
 
       <section className="section expertiseSection" id="expertise">
-        <div className="sectionLabel reveal"><span>03</span> Expertise</div>
+        <div className="sectionLabel reveal">Compétences</div>
         <div className="sectionLead reveal">
-          <h2>Une base technique<br />déjà polyvalente.</h2>
+          <h2>Ingénierie logicielle,<br />projets & infrastructures.</h2>
           <p>
-            Des compétences construites en formation et consolidées par des projets
-            personnels, avec une même priorité : comprendre ce qui se passe sous le capot.
+            De l’analyse du besoin à l’exploitation : conception, architecture,
+            organisation du projet, qualité logicielle et infrastructures.
+            Des compétences développées en formation et mises en pratique dans mes projets.
           </p>
         </div>
         <div className="expertiseGrid">
@@ -350,9 +424,9 @@ function App() {
       </section>
 
       <section className="section journeySection" id="parcours">
-        <div className="sectionLabel reveal"><span>04</span> Parcours</div>
+        <div className="sectionLabel reveal">Parcours</div>
         <div className="journeyIntro reveal">
-          <h2>Apprendre.<br />Transmettre.<br />Progresser.</h2>
+          <h2>Formation<br />& expérience.</h2>
           <p>
             Mon parcours universitaire m’apporte les fondations techniques. Mes
             expériences m’ont appris l’autonomie, le sens du service et la pédagogie.
@@ -366,22 +440,22 @@ function App() {
 
       <section className="section collaborationSection" id="collaborer" aria-labelledby="collaboration-title">
         <div className="caseHeading">
-          <div><p className="caseEyebrow">Travaillons ensemble</p><h2 id="collaboration-title">Un projet à construire.<br />Une équipe à rejoindre.</h2></div>
+          <div><p className="caseEyebrow">Collaborer</p><h2 id="collaboration-title">Une mission freelance<br />ou une alternance.</h2></div>
           <p>Deux façons de collaborer, avec la même attention au besoin, à la qualité de réalisation et aux échanges tout au long du projet.</p>
         </div>
         <div className="collaborationGrid">
           <article>
             <Code2 aria-hidden="true" size={27} />
             <h3>Vous avez un projet ?</h3>
-            <p>Je propose des missions de développement pour transformer votre besoin en un outil utilisable.</p>
-            <ul><li>Sites vitrines et expériences e-commerce</li><li>Applications web, dashboards et outils métier</li><li>API, intégrations et automatisations</li><li>Amélioration d’interfaces existantes</li></ul>
+            <p>Je propose un accompagnement technique pour cadrer, concevoir et mettre en œuvre votre solution informatique.</p>
+            <ul><li>Cadrage technique & architecture applicative</li><li>Applications web, sites & outils métier</li><li>API, intégrations & automatisations</li><li>CI/CD, conteneurisation & déploiement</li></ul>
             <a className="button buttonPrimary" href="mailto:anisrekima8@gmail.com?subject=Projet%20freelance">Discuter d’une mission <ArrowUpRight aria-hidden="true" size={17} /></a>
           </article>
           <article>
             <BriefcaseBusiness aria-hidden="true" size={27} />
             <h3>Vous recrutez en alternance ?</h3>
             <p>Je souhaite mettre mes compétences en pratique au sein d’une équipe et continuer à progresser sur des projets concrets.</p>
-            <ul><li>Développement logiciel et full stack</li><li>Cloud, déploiement et automatisation</li><li>Systèmes, réseaux et cybersécurité</li><li>Basé à Lille, permis B et véhiculé</li></ul>
+            <ul><li>Ingénierie logicielle & architecture</li><li>DevOps, CI/CD & infrastructures cloud</li><li>Systèmes, réseaux & cybersécurité</li><li>Gestion de projets techniques</li><li>Basé à Lille, permis B et véhiculé</li></ul>
             <a className="button buttonGhost" href="mailto:anisrekima8@gmail.com?subject=Opportunit%C3%A9%20en%20alternance">Proposer une alternance <ArrowUpRight aria-hidden="true" size={17} /></a>
             <div className="collaborationCvActions">
               <a className="collaborationCv" href={cvUrl} target="_blank" rel="noreferrer"><Eye aria-hidden="true" size={16} /> Voir mon CV</a>
@@ -394,7 +468,7 @@ function App() {
       <section className="contact" id="contact">
         <div className="contactInner reveal">
           <div>
-            <p className="contactEyebrow"><Terminal aria-hidden="true" size={18} /> Prochaine étape</p>
+            <p className="contactEyebrow">Contact</p>
             <h2>Parlons de votre projet<br />ou de votre équipe.</h2>
           </div>
           <div className="contactCopy">
@@ -417,7 +491,7 @@ function App() {
 
       <footer>
         <span>© 2026 Anis Rekima</span>
-        <span>Conçu avec React · Déployé sur GitHub Pages</span>
+        <span>Ingénierie informatique</span>
         <a href="#accueil">Retour en haut <ArrowUpRight aria-hidden="true" size={15} /></a>
       </footer>
     </main>
