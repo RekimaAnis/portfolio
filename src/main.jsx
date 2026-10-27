@@ -7,6 +7,7 @@ import {
   CloudCog,
   Code2,
   Download,
+  Eye,
   GitBranch,
   Mail,
   MapPin,
@@ -19,6 +20,7 @@ import ProjectShowcase from './ProjectShowcase'
 const githubUrl = 'https://github.com/RekimaAnis'
 const heroImage = `${import.meta.env.BASE_URL}hero-portfolio.png`
 const cvUrl = `${import.meta.env.BASE_URL}CV-Anis-Rekima.pdf`
+const portraitUrl = `${import.meta.env.BASE_URL}portrait-anis-rekima.webp`
 
 const featuredProjects = [
   {
@@ -202,7 +204,10 @@ function App() {
             Missions freelance & alternance
           </div>
           <p className="heroRole">Développement web · Logiciel · Cloud & sécurité</p>
-          <h1>Anis Rekima</h1>
+          <div className="heroIdentity">
+            <img className="heroPortrait" src={portraitUrl} alt="Portrait d’Anis Rekima" width="144" height="180" fetchPriority="high" />
+            <h1>Anis Rekima</h1>
+          </div>
           <p className="heroStatement">
             Je transforme la complexité technique en systèmes
             <strong> fiables, sécurisés et utiles.</strong>
@@ -216,6 +221,10 @@ function App() {
             <a className="button buttonPrimary" href="#realisations">
               Découvrir mon travail
               <ArrowDown aria-hidden="true" size={17} />
+            </a>
+            <a className="button buttonGhost" href={cvUrl} target="_blank" rel="noreferrer">
+              <Eye aria-hidden="true" size={17} />
+              Voir mon CV
             </a>
             <a className="button buttonGhost" href={cvUrl} download>
               <Download aria-hidden="true" size={17} />
@@ -374,7 +383,10 @@ function App() {
             <p>Je souhaite mettre mes compétences en pratique au sein d’une équipe et continuer à progresser sur des projets concrets.</p>
             <ul><li>Développement logiciel et full stack</li><li>Cloud, déploiement et automatisation</li><li>Systèmes, réseaux et cybersécurité</li><li>Basé à Lille, permis B et véhiculé</li></ul>
             <a className="button buttonGhost" href="mailto:anisrekima8@gmail.com?subject=Opportunit%C3%A9%20en%20alternance">Proposer une alternance <ArrowUpRight aria-hidden="true" size={17} /></a>
-            <a className="collaborationCv" href={cvUrl} download><Download aria-hidden="true" size={16} /> Consulter mon CV</a>
+            <div className="collaborationCvActions">
+              <a className="collaborationCv" href={cvUrl} target="_blank" rel="noreferrer"><Eye aria-hidden="true" size={16} /> Voir mon CV</a>
+              <a className="collaborationCv" href={cvUrl} download><Download aria-hidden="true" size={16} /> Télécharger mon CV</a>
+            </div>
           </article>
         </div>
       </section>
