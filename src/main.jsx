@@ -14,6 +14,7 @@ import {
   Terminal,
 } from 'lucide-react'
 import './styles.css'
+import ProjectShowcase from './ProjectShowcase'
 
 const githubUrl = 'https://github.com/RekimaAnis'
 const heroImage = `${import.meta.env.BASE_URL}hero-portfolio.png`
@@ -179,7 +180,8 @@ function App() {
           <span className="brandName">Anis Rekima</span>
         </a>
         <div className="navLinks">
-          <a href="#projets">Projets</a>
+          <a href="#realisations">Réalisations</a>
+          <a href="#collaborer">Collaborer</a>
           <a href="#expertise">Expertise</a>
           <a href="#parcours">Parcours</a>
         </div>
@@ -197,20 +199,21 @@ function App() {
         <div className="heroInner">
           <div className="availability">
             <span aria-hidden="true" />
-            Disponible pour une alternance
+            Missions freelance & alternance
           </div>
-          <p className="heroRole">Cloud engineer · Cybersecurity · Developer</p>
+          <p className="heroRole">Développement web · Logiciel · Cloud & sécurité</p>
           <h1>Anis Rekima</h1>
           <p className="heroStatement">
             Je transforme la complexité technique en systèmes
             <strong> fiables, sécurisés et utiles.</strong>
           </p>
           <p className="heroIntro">
-            Étudiant en Master Informatique à Lille, je construis mon expertise
-            entre infrastructure cloud, sécurité système et développement logiciel.
+            Je conçois des applications web, des outils métier et des expériences
+            numériques sur mesure. Basé à Lille, je suis ouvert aux missions
+            freelance et aux opportunités en alternance.
           </p>
           <div className="heroActions">
-            <a className="button buttonPrimary" href="#projets">
+            <a className="button buttonPrimary" href="#realisations">
               Découvrir mon travail
               <ArrowDown aria-hidden="true" size={17} />
             </a>
@@ -227,10 +230,10 @@ function App() {
       </section>
 
       <section className="proofBar" aria-label="Profil en quelques chiffres">
-        <div><strong>12+</strong><span>projets publics</span></div>
-        <div><strong>3</strong><span>piliers : cloud, sécurité, code</span></div>
-        <div><strong>M1</strong><span>informatique à Lille</span></div>
-        <div><strong>B1/B2</strong><span>anglais professionnel</span></div>
+        <div><strong>Web & mobile</strong><span>Des interfaces aux API</span></div>
+        <div><strong>Data & systèmes</strong><span>Des besoins techniques variés</span></div>
+        <div><strong>Freelance</strong><span>Pour vos projets numériques</span></div>
+        <div><strong>Alternance</strong><span>Pour rejoindre votre équipe</span></div>
       </section>
 
       <section className="section introSection reveal" id="profil">
@@ -244,8 +247,10 @@ function App() {
               ensemble : comment elle est construite, déployée, observée et protégée.
             </p>
             <p>
-              Je cherche une équipe où apprendre vite, prendre des responsabilités
-              progressivement et contribuer à des sujets techniques concrets.
+              J’accompagne les porteurs de projet dans la création de leurs outils
+              numériques et je souhaite aussi rejoindre une équipe en alternance.
+              Dans les deux cas, j’aime clarifier le besoin, construire et améliorer
+              le résultat avec les personnes qui l’utilisent.
             </p>
             <div className="profileFacts">
               <span>Permis B · Véhiculé</span>
@@ -255,10 +260,12 @@ function App() {
         </div>
       </section>
 
+      <ProjectShowcase />
+
       <section className="section projectsSection" id="projets">
         <div className="sectionLabel reveal"><span>02</span> Projets sélectionnés</div>
         <div className="sectionLead reveal">
-          <h2>Des projets qui montrent<br />comment je réfléchis.</h2>
+          <h2>D’autres explorations,<br />le code en accès libre.</h2>
           <p>
             Une sélection de travaux où j’explore la donnée, les réseaux et les
             systèmes. Le code source est accessible pour voir au-delà de la vitrine.
@@ -348,16 +355,40 @@ function App() {
         </div>
       </section>
 
+      <section className="section collaborationSection" id="collaborer" aria-labelledby="collaboration-title">
+        <div className="caseHeading">
+          <div><p className="caseEyebrow">Travaillons ensemble</p><h2 id="collaboration-title">Un projet à construire.<br />Une équipe à rejoindre.</h2></div>
+          <p>Deux façons de collaborer, avec la même attention au besoin, à la qualité de réalisation et aux échanges tout au long du projet.</p>
+        </div>
+        <div className="collaborationGrid">
+          <article>
+            <Code2 aria-hidden="true" size={27} />
+            <h3>Vous avez un projet ?</h3>
+            <p>Je propose des missions de développement pour transformer votre besoin en un outil utilisable.</p>
+            <ul><li>Sites vitrines et expériences e-commerce</li><li>Applications web, dashboards et outils métier</li><li>API, intégrations et automatisations</li><li>Amélioration d’interfaces existantes</li></ul>
+            <a className="button buttonPrimary" href="mailto:anisrekima8@gmail.com?subject=Projet%20freelance">Discuter d’une mission <ArrowUpRight aria-hidden="true" size={17} /></a>
+          </article>
+          <article>
+            <BriefcaseBusiness aria-hidden="true" size={27} />
+            <h3>Vous recrutez en alternance ?</h3>
+            <p>Je souhaite mettre mes compétences en pratique au sein d’une équipe et continuer à progresser sur des projets concrets.</p>
+            <ul><li>Développement logiciel et full stack</li><li>Cloud, déploiement et automatisation</li><li>Systèmes, réseaux et cybersécurité</li><li>Basé à Lille, permis B et véhiculé</li></ul>
+            <a className="button buttonGhost" href="mailto:anisrekima8@gmail.com?subject=Opportunit%C3%A9%20en%20alternance">Proposer une alternance <ArrowUpRight aria-hidden="true" size={17} /></a>
+            <a className="collaborationCv" href={cvUrl} download><Download aria-hidden="true" size={16} /> Consulter mon CV</a>
+          </article>
+        </div>
+      </section>
+
       <section className="contact" id="contact">
         <div className="contactInner reveal">
           <div>
             <p className="contactEyebrow"><Terminal aria-hidden="true" size={18} /> Prochaine étape</p>
-            <h2>Vous cherchez un profil<br />qui veut vraiment comprendre ?</h2>
+            <h2>Parlons de votre projet<br />ou de votre équipe.</h2>
           </div>
           <div className="contactCopy">
             <p>
-              Je suis disponible pour échanger autour d’une alternance en cloud,
-              cybersécurité ou développement logiciel à Lille et ses environs.
+              Une application à créer, un outil à améliorer ou une alternance à
+              proposer ? Présentez-moi votre besoin et échangeons sur la suite.
             </p>
             <div className="contactActions">
               <a className="button buttonLight" href="mailto:anisrekima8@gmail.com">
